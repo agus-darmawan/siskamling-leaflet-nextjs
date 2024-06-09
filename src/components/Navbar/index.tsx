@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white relative z-10">
+    <nav className="bg-white  z-50 fixed top-0 right-0 left-0">
       <div className="container mx-auto flex items-center justify-between h-16">
         <button
           className="text-xl font-bold text-[#0C364B]"

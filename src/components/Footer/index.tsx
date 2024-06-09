@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
   return (
     <footer
       id="footer"
-      className="border border-black bg-white text-[#0C364B] py-10 font-poppins font-bold"
+      className="border border-black bg-white text-[#0C364B] py-5 font-poppins font-bold"
     >
       <div className="container mx-auto px-4 h-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full items-center">
