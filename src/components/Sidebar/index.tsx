@@ -22,10 +22,10 @@ const Sidebar: React.FC = () => {
           </div>
           <div className="mt-4 space-y-2 text-white font-bold">
             <Navigate
-              href="/Petasebaran"
+              href="/peta-sebaran"
               icon={<TbMapSearch />}
               text="Peta Sebaran"
-              isActive={pathname === "/Petasebaran"}
+              isActive={pathname === "/peta-sebaran"}
             />
             <Navigate
               href="/formaduan"
@@ -78,11 +78,10 @@ const Navigate: React.FC<NavigateProps> = ({
 }) => (
   <Link href={href} legacyBehavior passHref>
     <a
-      className={`flex items-center hover:bg-[#4B6C7D] focus:outline-none rounded-full p-2 ${
-        isActive ? "bg-[#4B6C7D]" : ""
+      className={` px-5 flex items-center hover:bg-[#4B6C7D] focus:outline-none rounded-full p-2 ${
+        isActive ? "bg-[#9BD2EF] text-black hover:text-white" : ""
       }`}
       onClick={onClick}
-      style={{ display: "flex", alignItems: "center" }}
     >
       {icon}
       <span className="ml-2">{text}</span>
