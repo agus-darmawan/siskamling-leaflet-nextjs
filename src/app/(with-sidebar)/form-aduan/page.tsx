@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import axios from "axios";
 import { id } from "date-fns/locale";
 import {
   Form,
@@ -32,7 +33,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import createReport from "@/lib/reportService";
 import { Send } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
@@ -64,21 +64,10 @@ const ReportFormPage = () => {
 
   const onSubmit = async (values: ReportFormSchemaType) => {
     try {
-      console.log(values);
-      const createdReport = await createReport(values);
-      // Assuming toast is a function for displaying notifications
-      toast({
-        title: "Berhasil",
-        description: "Data berhasil dilaporkan",
-      });
-      console.log("Created Report:", createdReport);
-      setTimeout(() => window.location.reload(), 500);
+      const response = await axios.post("/api/submit-report", values);
+      console.log("Report created:", response.data.report);
     } catch (error) {
-      console.error("Error submitting report:", error);
-      toast({
-        title: "Gagal",
-        description: "Data tidak berhasil dilaporkan",
-      });
+      console.error("Error creating report:", error);
     }
   };
 
