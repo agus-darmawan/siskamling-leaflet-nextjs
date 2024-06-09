@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   metadataBase: new URL("https://postgres-prisma.vercel.app"),
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body className={inter.variable}>
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
