@@ -4,22 +4,15 @@ import { IoIosCreate } from "react-icons/io";
 import { TbMapSearch } from "react-icons/tb";
 import { VscGraphLine } from "react-icons/vsc";
 
-interface SidebarProps {
-  toggleSidebar: () => void;
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ toggleSidebar }) => (
+const Sidebar: React.FC = () => (
   <div
     id="sidebarExample"
-    className="fixed inset-y-0 left-0 bg-[#0C364B] transform transition-transform translate-x-0 z-20 w-64 border-r"
+    className="fixed inset-y-0 left-0 bg-[#0C364B] transform transition-transform translate-x-0 z-20 w-64 border-r mt-16"
     tabIndex={-1}
   >
     <div className="w-64 p-4">
       <div className="flex justify-between items-center">
         <h5 className="text-xl font-bold text-[#9BD2EF]">Beranda</h5>
-        <button type="button" className="text-white" onClick={toggleSidebar}>
-          ✕
-        </button>
       </div>
       <div className="mt-4 space-y-4 text-white font-bold">
         <Navigate
@@ -28,12 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({ toggleSidebar }) => (
           text="Peta Sebaran"
         />
         <Navigate href="/formaduan" icon={<IoIosCreate />} text="Form Aduan" />
-        <Navigate
-          href="#"
-          icon={<VscGraphLine />}
-          text="Statistika"
-          onClick={toggleSidebar}
-        />
+        <Navigate href="#" icon={<VscGraphLine />} text="Statistika" />
       </div>
     </div>
   </div>
