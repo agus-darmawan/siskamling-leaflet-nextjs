@@ -18,3 +18,16 @@ model users {
   image     String
   createdAt DateTime @default(now())
 }
+
+model Report {
+  id          Int      @id @default(autoincrement())
+  name        String
+  type        String
+  date        DateTime
+  phone       String
+  lat         String
+  long        String
+  location    String
+  description String
+  status      String    @default("terlapor")
+}

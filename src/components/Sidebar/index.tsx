@@ -28,10 +28,10 @@ const Sidebar: React.FC = () => {
               isActive={pathname === "/peta-sebaran"}
             />
             <Navigate
-              href="/formaduan"
+              href="/form-aduan"
               icon={<IoIosCreate />}
               text="Form Aduan"
-              isActive={pathname === "/formaduan"}
+              isActive={pathname === "/form-aduan"}
             />
             <Navigate
               href="#"
@@ -41,7 +41,7 @@ const Sidebar: React.FC = () => {
             />
           </div>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-4 pb-5">
           <p className="text-white font-semibold text-center leading-tight text-sm">
             Support by <br /> Institut Teknologi Sepuluh Nopember <br />
             Geomatics Engineering <br />
