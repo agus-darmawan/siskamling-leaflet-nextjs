@@ -40,7 +40,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
-export const reportFormSchema = z.object({
+const reportFormSchema = z.object({
   name: z.string().min(1, { message: "nama wajib diisi" }),
   type: z.string().min(1, { message: "jenis wajib diisi" }),
   date: z.date({ message: "tanggal wajib diisi" }),
