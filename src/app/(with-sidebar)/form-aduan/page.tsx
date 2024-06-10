@@ -87,6 +87,7 @@ const ReportFormPage = () => {
     "penipuan",
     "pengeroyokan",
     "pembobolan",
+    "lainya",
   ];
 
   return (
