@@ -9,6 +9,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import Image from "next/image";
 
 const Navbar: React.FC = () => {
+  const [isClient, setIsClient] = React.useState(false);
   const [isSidebarOpen, setSidebarOpen] = React.useState(false);
   const [isModalOpen, setModalOpen] = React.useState(false);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -44,6 +45,10 @@ const Navbar: React.FC = () => {
     }
   }, [isHomepage]);
 
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <nav className="bg-white z-50 fixed top-0 right-0 left-0">
       <div className="container mx-auto flex items-center justify-between h-16">
@@ -72,13 +77,15 @@ const Navbar: React.FC = () => {
           <form className="flex ml-96"></form>
         </div>
         <div className="flex items-center space-x-4">
-          {!isLoggedIn ? (
+          {!isClient ? (
+            <div>Loading...</div> // Placeholder during initial render
+          ) : !isLoggedIn ? (
             <NavbarButton onClick={toggleModal} text="Log In" />
           ) : (
-            <>
-              <h2 className="text-[#0C364B] font-bold">Welcome, Admin</h2>
+            <div className="flex space-x-4 items-center">
+              <p className="text-[#0C364B] font-bold">Welcome, Admin</p>
               <NavbarButton onClick={logout} text="Log Out" />
-            </>
+            </div>
           )}
         </div>
       </div>

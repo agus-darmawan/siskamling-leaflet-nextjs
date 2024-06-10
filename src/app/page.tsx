@@ -30,6 +30,7 @@ const HomePage: React.FC = () => {
                 alt="Hero Image"
                 width={792}
                 height={722}
+                priority
               />
             </section>
           </div>

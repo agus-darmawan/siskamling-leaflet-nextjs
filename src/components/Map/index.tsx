@@ -1,23 +1,29 @@
 import React, { FC, useEffect, useState } from "react";
 import useTileStore from "@/store/useSelectedTile";
+import { MdWrongLocation } from "react-icons/md";
 import {
   MapContainer,
   TileLayer,
   Marker,
   GeoJSON,
   LayersControl,
-  ZoomControl,
   useMapEvents,
+  Popup,
 } from "react-leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import ReactDOMServer from "react-dom/server";
 
 export interface MarkerData {
   coordinates: [number, number];
   id: string;
+  status: string;
+  type: string;
+  date: string;
 }
 
 interface MapComponentProps {
-  markers: MarkerData[];
+  markers: MarkerData[] | null;
 }
 
 const MapComponent: FC<MapComponentProps> = ({ markers }) => {
@@ -34,6 +40,20 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
       },
     });
     return null;
+  };
+  const getLocationIconSvgString = () => {
+    return ReactDOMServer.renderToString(
+      <MdWrongLocation size={22} color="red" />
+    );
+  };
+
+  const createCustomIcon = () => {
+    return L.divIcon({
+      html: getLocationIconSvgString(),
+      className: "custom-icon",
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+    });
   };
 
   useEffect(() => {
@@ -55,7 +75,6 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
       }}
       className="mt-16 ml-auto"
     >
-      <ZoomControl position={"topright"} />
       <LayerChangeHandler />
       <LayersControl position={"bottomright"}>
         <BaseLayer checked={selectedTile === "Leaflet"} name="Leaflet">
@@ -77,8 +96,20 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
           />
         </BaseLayer>
       </LayersControl>
-      {markers.map((marker, index) => (
-        <Marker key={index} position={marker.coordinates}></Marker>
+      {markers?.map((marker, index) => (
+        <Marker
+          key={index}
+          position={marker.coordinates}
+          icon={createCustomIcon()}
+        >
+          <Popup className="px-0 py-0">
+            <div className="space-x-0 space-y-0 px-0 py-0">
+              <h3 className="font-semibold">{marker.type}</h3>
+              <p>{new Date(marker.date).toLocaleDateString("id-ID")}</p>
+              <p>{marker.status}</p>
+            </div>
+          </Popup>
+        </Marker>
       ))}
       {geojsonData && (
         <GeoJSON
