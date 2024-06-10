@@ -3,10 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { IoIosCreate } from "react-icons/io";
 import { TbMapSearch } from "react-icons/tb";
-import { VscGraphLine, VscHome } from "react-icons/vsc";
+import { VscGraphLine, VscHome, VscDatabase } from "react-icons/vsc";
 import { usePathname } from "next/navigation";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const Sidebar: React.FC = () => {
+  const { isLoggedIn } = useAuthStore();
   const pathname = usePathname();
 
   return (
@@ -47,6 +49,14 @@ const Sidebar: React.FC = () => {
               text="Statistika"
               isActive={pathname === "/statistika"}
             />
+            {isLoggedIn && (
+              <Navigate
+                href="/admin"
+                icon={<VscDatabase />}
+                text="Dashboard"
+                isActive={pathname === "/admin"}
+              />
+            )}
           </div>
         </div>
         <div className="space-y-4 pb-5">
