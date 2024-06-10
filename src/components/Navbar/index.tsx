@@ -76,7 +76,7 @@ const Navbar: React.FC = () => {
             <NavbarButton onClick={toggleModal} text="Log In" />
           ) : (
             <>
-              <span className="text-[#0C364B] font-bold">Welcome, Admin</span>
+              <h2 className="text-[#0C364B] font-bold">Welcome, Admin</h2>
               <NavbarButton onClick={logout} text="Log Out" />
             </>
           )}

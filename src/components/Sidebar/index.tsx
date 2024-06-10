@@ -53,7 +53,7 @@ const Sidebar: React.FC = () => {
               <Navigate
                 href="/admin"
                 icon={<VscDatabase />}
-                text="Dashboard"
+                text="Admin"
                 isActive={pathname === "/admin"}
               />
             )}

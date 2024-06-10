@@ -5,6 +5,7 @@ import StatCardList from "@/components/StatCardList";
 import LineChart from "@/components/LineChart";
 import { notFound } from "next/navigation";
 import axios from "@/lib/axios";
+import Link from "next/link";
 
 interface StatusCount {
   status: string;
@@ -65,6 +66,16 @@ const Statistika: React.FC = () => {
             Total Kejadian per Bulan
           </h2>
           <LineChart data={organizedStats} />
+          <p className="text-center text-gray-500 text-sm">
+            Data diatas merupakan total kejadian yang terjadi pada setiap bulan
+            untuk melihat data lebih detil dapat dilihat pada link{" "}
+            <Link
+              href={"/data"}
+              className="text-blue-500 cursor-pointer hover:text-blue-400"
+            >
+              berikut
+            </Link>
+          </p>
         </CardContent>
       </section>
     </section>

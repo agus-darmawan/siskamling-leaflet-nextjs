@@ -59,7 +59,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
     ],
   };
 
-  return <Line data={chartConfig} className="min-h-[50vh]" />;
+  return <Line data={chartConfig} className="min-h-[45vh]" />;
 };
 
 export default LineChart;
