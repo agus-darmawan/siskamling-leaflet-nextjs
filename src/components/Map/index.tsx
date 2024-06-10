@@ -7,6 +7,7 @@ import {
   GeoJSON,
   LayersControl,
   ZoomControl,
+  useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -20,10 +21,20 @@ interface MapComponentProps {
 }
 
 const MapComponent: FC<MapComponentProps> = ({ markers }) => {
-  const { getSelectedTile } = useTileStore();
+  const { setSelectedTile, getSelectedTile } = useTileStore();
   const selectedTile = getSelectedTile();
   const { BaseLayer } = LayersControl;
   const [geojsonData, setGeojsonData] = useState(null);
+
+  const LayerChangeHandler = () => {
+    useMapEvents({
+      baselayerchange: (event: any) => {
+        console.log(event);
+        setSelectedTile(event.name);
+      },
+    });
+    return null;
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -45,9 +56,8 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
       className="mt-16 ml-auto"
     >
       <ZoomControl position={"topright"} />
-
+      <LayerChangeHandler />
       <LayersControl position={"bottomright"}>
-        {JSON.stringify(selectedTile)}
         <BaseLayer checked={selectedTile === "Leaflet"} name="Leaflet">
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
