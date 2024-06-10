@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import axios from "axios";
+import axios from "@/lib/axios";
 import { id } from "date-fns/locale";
 import {
   Form,
@@ -25,6 +25,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Toast } from "@radix-ui/react-toast";
 import {
   Select,
   SelectContent,
@@ -64,10 +65,19 @@ const ReportFormPage = () => {
 
   const onSubmit = async (values: ReportFormSchemaType) => {
     try {
-      const response = await axios.post("/api/submit-report", values);
-      console.log("Report created:", response.data.report);
+      const response = await axios.post("reports", values);
+      toast({
+        variant: "success",
+        title: "Success",
+        description: "Laporan berhasil diinput",
+      });
+      setTimeout(() => window.location.reload(), 500);
     } catch (error) {
-      console.error("Error creating report:", error);
+      toast({
+        variant: "error",
+        title: "Failed",
+        description: "Laporan gagal diinput mohon cek kembali laporan anda",
+      });
     }
   };
 
