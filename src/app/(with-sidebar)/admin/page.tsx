@@ -8,11 +8,6 @@ import RepportTable from "./_report-table";
 import { notFound } from "next/navigation";
 import axios from "@/lib/axios";
 
-interface Meta {
-  page: number;
-  total: number;
-}
-
 interface Data {
   date: string;
   location: string;
@@ -21,7 +16,6 @@ interface Data {
 }
 
 interface AdminData {
-  meta: Meta;
   data: Data[];
 }
 
@@ -35,7 +29,7 @@ const Statistika: React.FC = () => {
         if (!response.data) {
           notFound();
         } else {
-          setData(response.data.data);
+          setData(response.data);
         }
       } catch (error) {
         console.error("Failed to fetch statistics:", error);
@@ -57,12 +51,7 @@ const Statistika: React.FC = () => {
           {!data ? (
             <DataTableSkeleton columnCount={6} rowCount={4} />
           ) : (
-            <RepportTable
-              report={data.data}
-              page={data.meta.page}
-              totalUsers={data.data.length}
-              pageCount={data.meta.total}
-            />
+            <RepportTable report={data.data} />
           )}
         </CardContent>
       </section>

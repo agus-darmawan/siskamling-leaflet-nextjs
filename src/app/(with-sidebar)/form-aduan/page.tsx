@@ -25,7 +25,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Toast } from "@radix-ui/react-toast";
 import {
   Select,
   SelectContent,
@@ -65,7 +64,7 @@ const ReportFormPage = () => {
 
   const onSubmit = async (values: ReportFormSchemaType) => {
     try {
-      const response = await axios.post("reports", values);
+      await axios.post("reports", values);
       toast({
         variant: "success",
         title: "Success",

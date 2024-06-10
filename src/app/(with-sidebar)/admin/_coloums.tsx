@@ -16,6 +16,10 @@ export const columns: ColumnDef<any>[] = [
     cell: ({ row }) => new Date(row.original.date).toLocaleDateString("id-ID"),
   },
   {
+    accessorKey: "status",
+    header: "STATUS",
+  },
+  {
     accessorKey: "type",
     header: "JENIS",
   },
@@ -28,6 +32,7 @@ export const columns: ColumnDef<any>[] = [
     header: "KETERANGAN",
   },
   {
+    header: "ACTION",
     id: "actions",
     cell: ({ row }) => <CellAction data={row.original} />,
   },
