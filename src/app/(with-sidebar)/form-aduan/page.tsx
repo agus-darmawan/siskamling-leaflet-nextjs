@@ -91,7 +91,7 @@ const ReportFormPage = () => {
   ];
 
   return (
-    <section className="w-2/3 mx-auto">
+    <section className="w-2/3 mx-auto pt-8">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="p-5">
           <CardHeader>

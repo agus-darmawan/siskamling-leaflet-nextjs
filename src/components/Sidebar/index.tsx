@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { IoIosCreate } from "react-icons/io";
 import { TbMapSearch } from "react-icons/tb";
-import { VscGraphLine } from "react-icons/vsc";
+import { VscGraphLine, VscHome } from "react-icons/vsc";
 import { usePathname } from "next/navigation";
 
 const Sidebar: React.FC = () => {
@@ -18,9 +18,17 @@ const Sidebar: React.FC = () => {
       <div className="w-64 p-4 h-full flex justify-between flex-col">
         <div>
           <div className="flex justify-between items-center pt-5">
-            <h5 className="text-lg font-bold text-[#9BD2EF]">Beranda</h5>
+            <h5 className="text-lg font-bold text-[#9BD2EF]">
+              <Link href={"/"}>Beranda</Link>
+            </h5>
           </div>
           <div className="mt-4 space-y-2 text-white font-bold">
+            <Navigate
+              href="/"
+              icon={<VscHome />}
+              text="Home"
+              isActive={pathname === "/"}
+            />
             <Navigate
               href="/peta-sebaran"
               icon={<TbMapSearch />}
@@ -34,10 +42,10 @@ const Sidebar: React.FC = () => {
               isActive={pathname === "/form-aduan"}
             />
             <Navigate
-              href="#"
+              href="/statistika"
               icon={<VscGraphLine />}
               text="Statistika"
-              isActive={pathname === "#"}
+              isActive={pathname === "/statistika"}
             />
           </div>
         </div>
