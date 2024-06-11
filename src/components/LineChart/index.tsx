@@ -37,29 +37,54 @@ interface LineChartProps {
 
 const LineChart: React.FC<LineChartProps> = ({ data }) => {
   const chartLabels: string[] = [];
-  const chartData: number[] = [];
+  const datasets: any[] = [];
 
+  // Collect all unique months from all years for the x-axis labels
+  const allMonths = new Set<string>();
   Object.keys(data).forEach((year) => {
     data[year].forEach((monthData) => {
-      chartLabels.push(`${year}-${String(monthData.month).padStart(2, "0")}`);
-      chartData.push(monthData.count);
+      allMonths.add(String(monthData.month).padStart(2, "0"));
+    });
+  });
+  const sortedMonths = Array.from(allMonths).sort(
+    (a, b) => parseInt(a) - parseInt(b)
+  );
+
+  Object.keys(data).forEach((year) => {
+    const yearData: number[] = new Array(sortedMonths.length).fill(0);
+    data[year].forEach((monthData) => {
+      const monthIndex = sortedMonths.indexOf(
+        String(monthData.month).padStart(2, "0")
+      );
+      if (monthIndex !== -1) {
+        yearData[monthIndex] = monthData.count;
+      }
+    });
+
+    datasets.push({
+      label: `Total Kejadian ${year}`,
+      data: yearData,
+      fill: false,
+      borderColor: getRandomColor(),
+      tension: 0.1,
     });
   });
 
   const chartConfig = {
-    labels: chartLabels,
-    datasets: [
-      {
-        label: "Total Kejadian",
-        data: chartData,
-        fill: true,
-        borderColor: "rgb(12, 54, 75)",
-        tension: 1,
-      },
-    ],
+    labels: sortedMonths.map((month) => `Month ${month}`),
+    datasets: datasets,
   };
 
   return <Line data={chartConfig} className="min-h-[45vh]" />;
 };
+
+function getRandomColor() {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
 export default LineChart;
