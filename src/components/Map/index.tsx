@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import useTileStore from "@/store/useSelectedTile";
-import { MdWrongLocation } from "react-icons/md";
+import { VscShield } from "react-icons/vsc";
+import { TbMapPinExclamation } from "react-icons/tb";
 import {
   MapContainer,
   TileLayer,
@@ -44,13 +45,13 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
   };
   const getLocationIconSvgString = () => {
     return ReactDOMServer.renderToString(
-      <MdWrongLocation size={22} color="red" />
+      <TbMapPinExclamation size={22} color="#962121" />
     );
   };
 
   const policeIconSvgString = () => {
     return ReactDOMServer.renderToString(
-      <RiPoliceBadgeFill size={22} color="blue" />
+      <VscShield size={22} color="#01A96C" />
     );
   };
 
