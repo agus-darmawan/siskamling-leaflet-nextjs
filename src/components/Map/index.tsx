@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import useTileStore from "@/store/useSelectedTile";
 import { VscShield } from "react-icons/vsc";
 import { TbMapPinExclamation } from "react-icons/tb";
+import { RiPoliceBadgeFill } from "react-icons/ri";
 import {
   MapContainer,
   TileLayer,
@@ -14,7 +15,6 @@ import {
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import ReactDOMServer from "react-dom/server";
-import { RiPoliceBadgeFill } from "react-icons/ri";
 
 export interface MarkerData {
   coordinates: [number, number];
@@ -51,7 +51,7 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
 
   const policeIconSvgString = () => {
     return ReactDOMServer.renderToString(
-      <VscShield size={22} color="#01A96C" />
+      <RiPoliceBadgeFill size={22} color="#0C364B" />
     );
   };
 
