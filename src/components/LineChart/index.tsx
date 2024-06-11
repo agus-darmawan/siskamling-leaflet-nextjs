@@ -52,6 +52,8 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
     "December",
   ];
 
+  const colors = ["#1A7EAF", "#206C92", "#215772", "#1B3A4A", "#16252C"];
+
   // Collect all unique months from all years for the x-axis labels
   const allMonths = new Set<number>();
   Object.keys(data).forEach((year) => {
@@ -61,7 +63,7 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
   });
   const sortedMonths = Array.from(allMonths).sort((a, b) => a - b);
 
-  Object.keys(data).forEach((year) => {
+  Object.keys(data).forEach((year, index) => {
     const yearData: number[] = new Array(sortedMonths.length).fill(0);
     data[year].forEach((monthData) => {
       const monthIndex = sortedMonths.indexOf(monthData.month);
@@ -73,8 +75,8 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
     datasets.push({
       label: `Total Kejadian ${year}`,
       data: yearData,
-      backgroundColor: getRandomColor(),
-      borderColor: getRandomColor(),
+      backgroundColor: colors[index % colors.length],
+      borderColor: colors[index % colors.length],
       borderWidth: 1,
     });
   });
@@ -90,14 +92,5 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
 
   return <Bar data={chartConfig} className="min-h-[45vh]" />;
 };
-
-function getRandomColor() {
-  const letters = "0123456789ABCDEF";
-  let color = "#";
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-}
 
 export default BarChart;
