@@ -4,10 +4,9 @@ import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata = {
-  metadataBase: new URL("https://postgres-prisma.vercel.app"),
-  title: "Vercel Postgres Demo with Prisma",
-  description:
-    "A simple Next.js app with Vercel Postgres as the database and Prisma as the ORM",
+  metadataBase: new URL("https://siskamling.vercel.app"),
+  title: "Siskaming",
+  description: "",
 };
 
 const inter = Inter({
