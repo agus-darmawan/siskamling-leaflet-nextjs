@@ -13,6 +13,7 @@ import {
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import ReactDOMServer from "react-dom/server";
+import { RiPoliceBadgeFill } from "react-icons/ri";
 
 export interface MarkerData {
   coordinates: [number, number];
@@ -31,11 +32,11 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
   const selectedTile = getSelectedTile();
   const { BaseLayer } = LayersControl;
   const [geojsonData, setGeojsonData] = useState(null);
+  const [postData, setPostData] = useState<any[]>();
 
   const LayerChangeHandler = () => {
     useMapEvents({
       baselayerchange: (event: any) => {
-        console.log(event);
         setSelectedTile(event.name);
       },
     });
@@ -44,6 +45,12 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
   const getLocationIconSvgString = () => {
     return ReactDOMServer.renderToString(
       <MdWrongLocation size={22} color="red" />
+    );
+  };
+
+  const policeIconSvgString = () => {
+    return ReactDOMServer.renderToString(
+      <RiPoliceBadgeFill size={22} color="blue" />
     );
   };
 
@@ -56,12 +63,33 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
     });
   };
 
+  const createPoliceIcon = () => {
+    return L.divIcon({
+      html: policeIconSvgString(),
+      className: "custom-icon",
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+    });
+  };
+
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("/data/klampis.json");
-      const data = await response.json();
-      setGeojsonData(data);
+      try {
+        const [response, responsePos] = await Promise.all([
+          fetch("/data/klampis.json"),
+          fetch("/data/post.json"),
+        ]);
+
+        const data = await response.json();
+        const dataPost = await responsePos.json();
+
+        setGeojsonData(data);
+        setPostData(dataPost);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     }
+
     fetchData();
   }, []);
 
@@ -96,6 +124,19 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
           />
         </BaseLayer>
       </LayersControl>
+      {postData?.map((marker: any, index: number) => (
+        <Marker
+          key={index}
+          position={[marker.lat, marker.long]}
+          icon={createPoliceIcon()}
+        >
+          <Popup className="px-0 py-0">
+            <div className="space-x-0 space-y-0 px-0 py-0">
+              <h3 className="font-semibold">{marker.name}</h3>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
       {markers?.map((marker, index) => (
         <Marker
           key={index}
