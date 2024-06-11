@@ -71,12 +71,7 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
     }
   };
 
-  const statusOptions = [
-    "terlapor",
-    "tertangani",
-    "belum tertangani",
-    "dalam penanganan",
-  ];
+  const statusOptions = ["tertangani", "belum tertangani", "dalam penanganan"];
 
   return (
     <Form {...form}>
