@@ -88,6 +88,9 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
   const chartConfig = {
     labels: chartLabels,
     datasets: datasets,
+    animation: {
+      animateScale: true,
+    },
   };
 
   return <Bar data={chartConfig} className="min-h-[45vh]" />;

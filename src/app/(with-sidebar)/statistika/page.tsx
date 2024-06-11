@@ -6,6 +6,7 @@ import LineChart from "@/components/LineChart";
 import { notFound } from "next/navigation";
 import axios from "@/lib/axios";
 import Link from "next/link";
+import DoughnutChart from "@/components/DonoutChart";
 
 interface StatusCount {
   status: string;
@@ -51,15 +52,32 @@ const Statistika: React.FC = () => {
   const { statusCounts, organizedStats } = data;
 
   // Example chart data for each status count
-  const chartDataList = statusCounts.map((status) => ({
-    labels: ["Completed", "In Progress", "Pending"],
+  const filteredStatusCounts = statusCounts.filter(
+    (status) => status.status.toLowerCase() !== "terlapor"
+  );
+
+  const chartData = {
+    labels: filteredStatusCounts.map((status) => status.status),
     datasets: [
       {
-        data: [status.count, 10, 5], // Example data, replace with actual data if available
-        backgroundColor: ["#36A2EB", "#FFCE56", "#FF6384"],
+        data: filteredStatusCounts.map((status) => status.count),
+        backgroundColor: [
+          "#1A7EAF",
+          "#206C92",
+          "#215772",
+          "#1B3A4A",
+          "#16252C",
+        ],
+        hoverBackgroundColor: [
+          "#36A2EB",
+          "#FFCE56",
+          "#FF6384",
+          "#4BC0C0",
+          "#9966FF",
+        ],
       },
     ],
-  }));
+  };
 
   return (
     <section className="p-8">
@@ -69,11 +87,11 @@ const Statistika: React.FC = () => {
         </CardTitle>
       </CardHeader>
       <section className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div className="grid grid-cols-1 gap-10">
-          <StatCardList
-            statusCounts={statusCounts}
-            chartDataList={chartDataList}
-          />
+        <div className="grid grid-cols-1 grid-rows-1 gap-10">
+          <StatCardList statusCounts={statusCounts} />
+          <CardContent className="h-full bg-gray-300 rounded-3xl p-6">
+            <DoughnutChart data={chartData} />
+          </CardContent>
         </div>
         <CardContent className="h-full bg-gray-300 rounded-3xl p-6">
           <h2 className="text-2xl text-white text-center font-bold mb-4">

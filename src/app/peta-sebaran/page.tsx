@@ -39,7 +39,6 @@ const PetaSebaran: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log(filter);
     if (data) {
       const newFilteredData = data.filter((item: any) =>
         filter.includes(item.type)

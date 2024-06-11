@@ -1,4 +1,3 @@
-// components/StatCardList.tsx
 import React from "react";
 import StatCard from "./StatsCard";
 
@@ -9,22 +8,16 @@ interface StatusCount {
 
 interface StatCardListProps {
   statusCounts: StatusCount[];
-  chartDataList: any[]; // Replace 'any' with proper type if known
 }
 
-const StatCardList: React.FC<StatCardListProps> = ({
-  statusCounts,
-  chartDataList,
-}) => {
+const StatCardList: React.FC<StatCardListProps> = ({ statusCounts }) => {
   return (
-    <div className="grid grid-cols-2 gap-10">
-      {statusCounts.map((status, index) => (
+    <div className="grid grid-cols-4 gap-5">
+      {statusCounts.map((status) => (
         <StatCard
           key={status.status}
           title={status.status}
           value={status.count}
-          chartData={chartDataList[index]}
-          imageSrc={`/images/${status.status}-chart.svg`} // Assuming images are named by status
         />
       ))}
     </div>
