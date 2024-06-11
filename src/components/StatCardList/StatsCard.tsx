@@ -1,7 +1,7 @@
 // components/StatCard.tsx
 import React from "react";
 import { CardContent } from "@/components/ui/card";
-import PieChart from "./PIeChart";
+import PieChart from "./PieChart";
 import Image from "next/image";
 
 interface StatCardProps {
