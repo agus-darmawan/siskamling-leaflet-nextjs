@@ -1,4 +1,4 @@
-"use client";
+// pages/statistika.tsx
 import React, { useEffect, useState } from "react";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import StatCardList from "@/components/StatCardList";
@@ -50,6 +50,17 @@ const Statistika: React.FC = () => {
 
   const { statusCounts, organizedStats } = data;
 
+  // Example chart data for each status count
+  const chartDataList = statusCounts.map((status) => ({
+    labels: ["Completed", "In Progress", "Pending"],
+    datasets: [
+      {
+        data: [status.count, 10, 5], // Example data, replace with actual data if available
+        backgroundColor: ["#36A2EB", "#FFCE56", "#FF6384"],
+      },
+    ],
+  }));
+
   return (
     <section className="p-8">
       <CardHeader>
@@ -59,10 +70,13 @@ const Statistika: React.FC = () => {
       </CardHeader>
       <section className="grid grid-cols-1 md:grid-cols-2 gap-10">
         <div className="grid grid-cols-1 gap-10">
-          <StatCardList statusCounts={statusCounts} />
+          <StatCardList
+            statusCounts={statusCounts}
+            chartDataList={chartDataList}
+          />
         </div>
         <CardContent className="h-full bg-gray-300 rounded-3xl p-6">
-          <h2 className="text-2xl  text-white text-center font-bold mb-4">
+          <h2 className="text-2xl text-white text-center font-bold mb-4">
             Total Kejadian per Bulan
           </h2>
           <LineChart data={organizedStats} />
