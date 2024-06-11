@@ -1,12 +1,11 @@
-// components/LineChart.tsx
+// components/BarChart.tsx
 import React from "react";
-import { Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
@@ -15,8 +14,7 @@ import {
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend
@@ -31,31 +29,42 @@ interface OrganizedStats {
   [year: string]: MonthData[];
 }
 
-interface LineChartProps {
+interface BarChartProps {
   data: OrganizedStats;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data }) => {
+const BarChart: React.FC<BarChartProps> = ({ data }) => {
   const chartLabels: string[] = [];
   const datasets: any[] = [];
 
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
   // Collect all unique months from all years for the x-axis labels
-  const allMonths = new Set<string>();
+  const allMonths = new Set<number>();
   Object.keys(data).forEach((year) => {
     data[year].forEach((monthData) => {
-      allMonths.add(String(monthData.month).padStart(2, "0"));
+      allMonths.add(monthData.month);
     });
   });
-  const sortedMonths = Array.from(allMonths).sort(
-    (a, b) => parseInt(a) - parseInt(b)
-  );
+  const sortedMonths = Array.from(allMonths).sort((a, b) => a - b);
 
   Object.keys(data).forEach((year) => {
     const yearData: number[] = new Array(sortedMonths.length).fill(0);
     data[year].forEach((monthData) => {
-      const monthIndex = sortedMonths.indexOf(
-        String(monthData.month).padStart(2, "0")
-      );
+      const monthIndex = sortedMonths.indexOf(monthData.month);
       if (monthIndex !== -1) {
         yearData[monthIndex] = monthData.count;
       }
@@ -64,18 +73,22 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
     datasets.push({
       label: `Total Kejadian ${year}`,
       data: yearData,
-      fill: false,
+      backgroundColor: getRandomColor(),
       borderColor: getRandomColor(),
-      tension: 0.1,
+      borderWidth: 1,
     });
   });
 
+  sortedMonths.forEach((month) => {
+    chartLabels.push(monthNames[month - 1]);
+  });
+
   const chartConfig = {
-    labels: sortedMonths.map((month) => `Month ${month}`),
+    labels: chartLabels,
     datasets: datasets,
   };
 
-  return <Line data={chartConfig} className="min-h-[45vh]" />;
+  return <Bar data={chartConfig} className="min-h-[45vh]" />;
 };
 
 function getRandomColor() {
@@ -87,4 +100,4 @@ function getRandomColor() {
   return color;
 }
 
-export default LineChart;
+export default BarChart;
