@@ -1,4 +1,4 @@
-// pages/statistika.tsx
+"use client";
 import React, { useEffect, useState } from "react";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import StatCardList from "@/components/StatCardList";
