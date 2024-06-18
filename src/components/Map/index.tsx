@@ -14,6 +14,7 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import CloudinaryImg from "../CloudinaryImage";
 import ReactDOMServer from "react-dom/server";
 
 export interface MarkerData {
@@ -135,6 +136,14 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
             <div className="space-x-0 space-y-0 px-0 py-0">
               <h3 className="font-semibold">{marker.name}</h3>
             </div>
+            <CloudinaryImg
+              publicId={`pos/${marker.name.toLowerCase().replace(/\s+/g, "")}`}
+              width="200"
+              height="300"
+              alt={marker.name}
+              aspect={{ width: 1, height: 1 }}
+              className="w-full h-full"
+            />
           </Popup>
         </Marker>
       ))}
