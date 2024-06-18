@@ -52,6 +52,7 @@
     "react-icons": "^5.2.1",
     "react-image-lightbox": "^5.1.4",
     "react-leaflet": "^4.2.1",
+    "react-leaflet-heatmap-layer-v3": "3.0.3-beta-1",
     "react-router-dom": "^6.23.1",
     "sharp": "^0.33.4",
     "tailwind-merge": "^2.3.0",

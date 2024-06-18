@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
 import useTileStore from "@/store/useSelectedTile";
-import { VscShield } from "react-icons/vsc";
 import { TbMapPinExclamation } from "react-icons/tb";
 import { RiPoliceBadgeFill } from "react-icons/ri";
 import {
@@ -12,6 +11,7 @@ import {
   useMapEvents,
   Popup,
 } from "react-leaflet";
+import { HeatmapLayer } from "react-leaflet-heatmap-layer-v3";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import CloudinaryImg from "../CloudinaryImage";
@@ -27,14 +27,20 @@ export interface MarkerData {
 
 interface MapComponentProps {
   markers: MarkerData[] | null;
+  showGeoJSON: boolean;
+  showHeatmap: boolean;
 }
 
-const MapComponent: FC<MapComponentProps> = ({ markers }) => {
+const MapComponent: FC<MapComponentProps> = ({
+  markers,
+  showGeoJSON,
+  showHeatmap,
+}) => {
   const { setSelectedTile, getSelectedTile } = useTileStore();
   const selectedTile = getSelectedTile();
   const { BaseLayer } = LayersControl;
-  const [geojsonData, setGeojsonData] = useState(null);
-  const [postData, setPostData] = useState<any[]>();
+  const [geojsonData, setGeojsonData] = useState<any | null>(null);
+  const [postData, setPostData] = useState<any[] | null>(null);
 
   const LayerChangeHandler = () => {
     useMapEvents({
@@ -44,6 +50,7 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
     });
     return null;
   };
+
   const getLocationIconSvgString = () => {
     return ReactDOMServer.renderToString(
       <TbMapPinExclamation size={22} color="#962121" />
@@ -95,6 +102,14 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
     fetchData();
   }, []);
 
+  const customGradient = {
+    0.2: "#99c8e1", // Gold
+    0.4: "#78add1", // Orange
+    0.6: "#4596c4", // Tomato
+    0.8: "#1e7bad", // OrangeRed
+    1.0: "#045a8d",
+  };
+
   return (
     <MapContainer
       center={[-7.2874102, 112.7780475]}
@@ -126,6 +141,33 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
           />
         </BaseLayer>
       </LayersControl>
+      {showHeatmap && markers && (
+        <HeatmapLayer
+          fitBoundsOnLoad
+          fitBoundsOnUpdate
+          radius={100}
+          points={markers.map((marker) => ({
+            lat: marker.coordinates[0],
+            lng: marker.coordinates[1],
+            value: 1, // You can adjust the value based on your requirements
+          }))}
+          longitudeExtractor={(m) => m.lng}
+          latitudeExtractor={(m) => m.lat}
+          intensityExtractor={(m) => m.value}
+          gradient={customGradient}
+        />
+      )}
+      {showGeoJSON && geojsonData && (
+        <GeoJSON
+          data={geojsonData}
+          style={{
+            color: "#9BD2EF",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.5,
+          }}
+        />
+      )}
       {postData?.map((marker: any, index: number) => (
         <Marker
           key={index}
@@ -162,17 +204,6 @@ const MapComponent: FC<MapComponentProps> = ({ markers }) => {
           </Popup>
         </Marker>
       ))}
-      {geojsonData && (
-        <GeoJSON
-          data={geojsonData}
-          style={{
-            color: "#9BD2EF",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5,
-          }}
-        />
-      )}
     </MapContainer>
   );
 };

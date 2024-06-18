@@ -6,6 +6,7 @@ import { TbMapSearch } from "react-icons/tb";
 import { VscGraphLine, VscHome, VscDatabase } from "react-icons/vsc";
 import { usePathname } from "next/navigation";
 import { useAuthStore } from "@/store/useAuthStore";
+import { MdOutlineMenuBook } from "react-icons/md";
 
 const Sidebar: React.FC = () => {
   const { isLoggedIn } = useAuthStore();
@@ -48,6 +49,12 @@ const Sidebar: React.FC = () => {
               icon={<VscGraphLine />}
               text="Statistika"
               isActive={pathname === "/statistika"}
+            />
+            <Navigate
+              href="/panduan"
+              icon={<MdOutlineMenuBook />}
+              text="Panduan"
+              isActive={pathname === "/panduan"}
             />
             {isLoggedIn && (
               <Navigate

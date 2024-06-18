@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 const HomePage: React.FC = () => {
   return (
     <>
-      <main className=" flex items-center max-h-[75vh] bg-gray-800 pt-20">
+      <main className=" flex items-center max-h-[75vh] bg-[#0C364B] pt-20">
         <div className="container mx-auto h-full">
           <div className="grid grid-cols-1 md:grid-cols-2 h-full items-center gap-4">
             <section className="p-4">

@@ -83,11 +83,11 @@ const ReportFormPage = () => {
   const typeOptions = [
     "curat",
     "curanmor",
-    "penganiyayaan",
+    "penganiayaan",
     "penipuan",
     "pengeroyokan",
     "pembobolan",
-    "lainya",
+    "lainnya",
   ];
 
   return (
