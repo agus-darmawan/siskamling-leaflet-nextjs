@@ -1,16 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const typeOptions = [
   "curat",
   "curanmor",
-  "penganiyayaan",
+  "penganiayaan",
   "penipuan",
   "pengeroyokan",
   "pembobolan",
-  "lainya",
+  "lainnya",
 ];
 
 interface SidebarMapProps {
