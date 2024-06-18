@@ -30,6 +30,7 @@
     "@types/node": "20.8.3",
     "@types/react": "18.2.25",
     "@types/react-dom": "18.2.11",
+    "@vgrid/react-leaflet-heatmap-layer": "^4.0.3",
     "autoprefixer": "10.4.16",
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",

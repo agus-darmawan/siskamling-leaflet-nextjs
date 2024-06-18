@@ -92,7 +92,7 @@ const PetaSebaran: React.FC = () => {
                   onClick={toggleHeatmap}
                 />
               )}
-              <label>Show Heatmap</label>
+              <label>Show Kernel</label>
             </div>
           </div>
           <DynamicMapComponent

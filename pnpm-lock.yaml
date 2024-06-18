@@ -62,6 +62,9 @@ dependencies:
   '@types/react-dom':
     specifier: 18.2.11
     version: 18.2.11
+  '@vgrid/react-leaflet-heatmap-layer':
+    specifier: ^4.0.3
+    version: 4.0.3(leaflet@1.9.4)(react-leaflet@4.2.1)(react@18.2.0)
   autoprefixer:
     specifier: 10.4.16
     version: 10.4.16(postcss@8.4.31)
@@ -1606,6 +1609,23 @@ packages:
     dependencies:
       '@typescript-eslint/types': 6.7.4
       eslint-visitor-keys: 3.4.3
+    dev: false
+
+  /@vgrid/react-leaflet-heatmap-layer@4.0.3(leaflet@1.9.4)(react-leaflet@4.2.1)(react@18.2.0):
+    resolution: {integrity: sha512-DSkRhJvH74YeGWvw7xbZwxJ8K/A9C57i8oDpLB7w6+eCfMnPFCH+qCSJfrV/zauRG3s2OTRSnnUpWJbOj4IiBA==}
+    peerDependencies:
+      leaflet: ^1.0.0
+      react: ^18.0.0
+      react-leaflet: ^4.0.0
+    dependencies:
+      '@vgrid/simpleheat': 0.5.0
+      leaflet: 1.9.4
+      react: 18.2.0
+      react-leaflet: 4.2.1(leaflet@1.9.4)(react-dom@18.2.0)(react@18.2.0)
+    dev: false
+
+  /@vgrid/simpleheat@0.5.0:
+    resolution: {integrity: sha512-OXw+jBCAD2j2Oj/+sp/VtYOEr+sB+BR2C3wuFHoOh0ARfOIJeILM/B0CAObJDo2LBSGoppy+Qlih05cdFfPc0A==}
     dev: false
 
   /acorn-jsx@5.3.2(acorn@8.10.0):
