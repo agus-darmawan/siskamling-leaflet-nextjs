@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
-import useTileStore from "@/store/useSelectedTile";
-import { TbMapPinExclamation } from "react-icons/tb";
 import { RiPoliceBadgeFill } from "react-icons/ri";
+import { TbMapPinExclamation } from "react-icons/tb";
+
 import {
   MapContainer,
   TileLayer,
@@ -14,8 +14,9 @@ import {
 import { HeatmapLayer } from "react-leaflet-heatmap-layer-v3";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import CloudinaryImg from "../CloudinaryImage";
 import ReactDOMServer from "react-dom/server";
+import CloudinaryImg from "../CloudinaryImage";
+import useTileStore from "@/store/useSelectedTile";
 
 export interface MarkerData {
   coordinates: [number, number];
@@ -36,13 +37,11 @@ const MapComponent: FC<MapComponentProps> = ({
   showGeoJSON,
   showHeatmap,
 }) => {
-  const { setSelectedTile, getSelectedTile } = useTileStore();
-  const selectedTile = getSelectedTile();
-  const { BaseLayer } = LayersControl;
+  const { setSelectedTile, selectedTile } = useTileStore();
   const [geojsonData, setGeojsonData] = useState<any | null>(null);
   const [postData, setPostData] = useState<any[] | null>(null);
 
-  const LayerChangeHandler = () => {
+  const LayerChangeHandler: FC = () => {
     useMapEvents({
       baselayerchange: (event: any) => {
         setSelectedTile(event.name);
@@ -51,21 +50,49 @@ const MapComponent: FC<MapComponentProps> = ({
     return null;
   };
 
-  const getLocationIconSvgString = () => {
-    return ReactDOMServer.renderToString(
-      <TbMapPinExclamation size={22} color="#962121" />
-    );
-  };
-
   const policeIconSvgString = () => {
     return ReactDOMServer.renderToString(
       <RiPoliceBadgeFill size={22} color="#0C364B" />
     );
   };
 
-  const createCustomIcon = () => {
+  const createCustomIcon = (status: string) => {
+    const statusColors: { [key: string]: string } = {
+      curat: "#FF0000", // Red color for "curat" (burglary)
+      maling: "#FFFF00", // Yellow color for "maling" (thief)
+      curanmor: "#00FF00", // Green color for "curanmor" (motorcycle theft)
+      penganiayaan: "#FFA500", // Orange color for "penganiayaan" (assault)
+      penipuan: "#FF1493", // DeepPink color for "penipuan" (fraud)
+      pengeroyokan: "#8A2BE2", // BlueViolet color for "pengeroyokan" (assault)
+      pembobolan: "#008080", // Teal color for "pembobolan" (break-in)
+      lainnya: "#808080",
+      lainya: "#808080",
+      // Add more as needed
+    };
+
+    const color = statusColors[status.toLowerCase()] || "#FF0000";
+
+    const iconHtml = `
+      <svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill=${color}
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+        <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+  <path d="M15.005 19.31l-1.591 1.59a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 13.592 -4.638" />
+  <path d="M19 16v3" />
+  <path d="M19 22v.01" />
+      </svg>
+    `;
+
     return L.divIcon({
-      html: getLocationIconSvgString(),
+      html: iconHtml,
       className: "custom-icon",
       iconSize: [32, 32],
       iconAnchor: [16, 32],
@@ -75,14 +102,14 @@ const MapComponent: FC<MapComponentProps> = ({
   const createPoliceIcon = () => {
     return L.divIcon({
       html: policeIconSvgString(),
-      className: "custom-icon",
+      className: "custom-icon ",
       iconSize: [32, 32],
       iconAnchor: [16, 32],
     });
   };
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
         const [response, responsePos] = await Promise.all([
           fetch("/data/klampis.json"),
@@ -97,7 +124,7 @@ const MapComponent: FC<MapComponentProps> = ({
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-    }
+    };
 
     fetchData();
   }, []);
@@ -113,43 +140,49 @@ const MapComponent: FC<MapComponentProps> = ({
   return (
     <MapContainer
       center={[-7.2874102, 112.7780475]}
-      zoom={23}
-      style={{
-        height: "90vh",
-        width: "70vw",
-      }}
+      zoom={13}
+      style={{ height: "94vh", width: "70%" }}
       className="mt-16 ml-auto"
     >
       <LayerChangeHandler />
-      <LayersControl position={"bottomright"}>
-        <BaseLayer checked={selectedTile === "Leaflet"} name="Leaflet">
+      <LayersControl position="bottomright">
+        <LayersControl.BaseLayer
+          checked={selectedTile === "Leaflet"}
+          name="Leaflet"
+        >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
-        </BaseLayer>
-        <BaseLayer checked={selectedTile === "Default"} name="Default">
+        </LayersControl.BaseLayer>
+        <LayersControl.BaseLayer
+          checked={selectedTile === "Default"}
+          name="Default"
+        >
           <TileLayer
-            attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution={`© <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> © <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`}
             url={`https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=${process.env.NEXT_STADIA_MAPS_API_KEY}`}
           />
-        </BaseLayer>
-        <BaseLayer checked={selectedTile === "Satellite"} name="Satellite">
+        </LayersControl.BaseLayer>
+        <LayersControl.BaseLayer
+          checked={selectedTile === "Satellite"}
+          name="Satellite"
+        >
           <TileLayer
             attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
           />
-        </BaseLayer>
+        </LayersControl.BaseLayer>
       </LayersControl>
+      ;
       {showHeatmap && markers && (
         <HeatmapLayer
           fitBoundsOnLoad
           fitBoundsOnUpdate
-          radius={100}
           points={markers.map((marker) => ({
             lat: marker.coordinates[0],
             lng: marker.coordinates[1],
-            value: 1, // You can adjust the value based on your requirements
+            value: 1,
           }))}
           longitudeExtractor={(m) => m.lng}
           latitudeExtractor={(m) => m.lat}
@@ -170,34 +203,34 @@ const MapComponent: FC<MapComponentProps> = ({
       )}
       {postData?.map((marker: any, index: number) => (
         <Marker
-          key={index}
+          key={`post-${index}`}
           position={[marker.lat, marker.long]}
           icon={createPoliceIcon()}
         >
-          <Popup className="px-0 py-0">
-            <div className="space-x-0 space-y-0 px-0 py-0">
-              <h3 className="font-semibold">{marker.name}</h3>
+          <Popup>
+            <div>
+              <h3>{marker.name}</h3>
+              <CloudinaryImg
+                publicId={`pos/${marker.name
+                  .toLowerCase()
+                  .replace(/\s+/g, "")}`}
+                width="200"
+                height="300"
+                alt={marker.name}
+              />
             </div>
-            <CloudinaryImg
-              publicId={`pos/${marker.name.toLowerCase().replace(/\s+/g, "")}`}
-              width="200"
-              height="300"
-              alt={marker.name}
-              aspect={{ width: 1, height: 1 }}
-              className="w-full h-full"
-            />
           </Popup>
         </Marker>
       ))}
       {markers?.map((marker, index) => (
         <Marker
-          key={index}
+          key={`marker-${index}`}
           position={marker.coordinates}
-          icon={createCustomIcon()}
+          icon={createCustomIcon(marker.type)}
         >
-          <Popup className="px-0 py-0">
-            <div className="space-x-0 space-y-0 px-0 py-0">
-              <h3 className="font-semibold">{marker.type}</h3>
+          <Popup>
+            <div>
+              <h3>{marker.type}</h3>
               <p>{new Date(marker.date).toLocaleDateString("id-ID")}</p>
               <p>{marker.status}</p>
             </div>
