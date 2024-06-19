@@ -13,8 +13,8 @@ const DynamicMapComponent = dynamic(() => import("@/components/Map"), {
 });
 
 const PetaSebaran: React.FC = () => {
-  const [showGeoJSON, setShowGeoJSON] = useState(true);
-  const [showHeatmap, setShowHeatmap] = useState(true);
+  const [showGeoJSON, setShowGeoJSON] = useState(false);
+  const [showHeatmap, setShowHeatmap] = useState(false);
   const [data, setData] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<string[]>([]);
